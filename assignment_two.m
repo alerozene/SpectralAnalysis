@@ -2,7 +2,7 @@ clc; clear all; close all;
 %% Task 1
 % polynomial coefficients
 a_coeffs = [-2 3 1 2];
-L = 100;
+L = 15;
 % matrix T
 deriv_operator = zeros(L*2+1,1);
 for ii = 1:size(deriv_operator,1)
@@ -21,7 +21,7 @@ A.op = @(u) a_coeffs(1)*u+a_coeffs(2)*diff(u)+a_coeffs(3)*diff(u,2)...
 [vv,D] = eigs(A,5);
 %% Task 3
 x = chebfun('x', d);
-u0 = sin(x)^2+0.5*cos(x)^2;
+u0 = sin(x)^2+0.5*cos(x);
 t = [0.1 0.5 2];
 u = expm(A, t, u0);
 %% Task 4 [Repeat the whole thing with an(1)=2]
@@ -33,6 +33,14 @@ B.op = @(v) b_coeffs(1)*v+b_coeffs(2)*diff(v)+b_coeffs(3)*diff(v,2)...
 v = expm(B, t, u0);
 %% Extra task
 %% PLOTS
+
+figure
+set(gcf,'color','w');
+plot(spectrumT,'o')
+xlabel('Real Axis')
+ylabel('Imaginary Axis')
+grid('on')
+axis([-7 0 -15 15])
 
 figure;
 set(gcf,'color','w');
@@ -62,13 +70,7 @@ hold on
 plot(v{3})
 title(sprintf('time = %f',t(3)))
 
-figure
-set(gcf,'color','w');
-plot(spectrumT,'o')
-xlabel('Real Axis')
-ylabel('Imaginary Axis')
-grid('on')
-axis([-50 0 -20 20])
+
 
 
 
@@ -125,3 +127,9 @@ ylabel('Imaginary Axis')
 title(sprintf('Linear Operator eigenvalues [%d %d %d %d]',b_coeffs))
 axis([-7 2 -15 15])
 grid('on')
+
+figure;
+plot(u{1})
+hold on
+plot(u{2})
+plot(u{3})
