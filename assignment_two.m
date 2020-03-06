@@ -70,10 +70,6 @@ hold on
 plot(v{3})
 title(sprintf('time = %f',t(3)))
 
-
-
-
-
 figure
 title('Solutions at time 2.0')
 yyaxis right
