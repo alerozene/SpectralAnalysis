@@ -1,3 +1,5 @@
+% SC42135 SPECTRAL ANALYSIS OF NONLINEAR/INFINITE-DIMENSIONAL SYSTEMS
+% Practice session 2
 clc; clear all; close all;
 %% Task 1
 % polynomial coefficients
@@ -32,6 +34,8 @@ B.op = @(v) b_coeffs(1)*v+b_coeffs(2)*diff(v)+b_coeffs(3)*diff(v,2)...
 [v1,D1] = eigs(B,5);      
 v = expm(B, t, u0);
 %% Extra task
+
+
 %% PLOTS
 
 figure
@@ -44,7 +48,7 @@ axis([-7 0 -15 15])
 
 figure;
 set(gcf,'color','w');
-plot(real(D), imag(D), '*','MarkerSize', 6,'LineWidth',2)
+plot(diag(D), '*','MarkerSize', 6,'LineWidth',2)
 xlabel('Real Axis')
 ylabel('Imaginary Axis')
 title('Linear Operator eigenvalues')
