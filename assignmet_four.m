@@ -50,8 +50,8 @@ Ynp = [Yn1p;Yn2p];
 An = Ynp'*pinv(Yn');
 
 Xp = x1(dom2,:);
-
-C = Xp*pinv(An*Yn');
+Xp2 = x2(dom2,:);
+C = Xp'*pinv(An*Yn1');
 %% Task 6. State trajectory for x[0] = [-0.7 1.1]
 
 % ODE method
@@ -59,7 +59,7 @@ x0_t6 = [-0.7;1.1];
 [~,xt6] = ode45(@P4T1_fx, (0:ts:ts*m), x0_t6);
 
 % Koopman
-y0 = [x0_t6(1);x0_t6(2)-x0_t6(1)^2];
-xhat = C*A.^m*y0;
+y0 = P4T4(x0_t6,d);
+x_hat = C*An*y0;
 
 %% Task 7. Repeat tasks 5 & 6 with d=3
