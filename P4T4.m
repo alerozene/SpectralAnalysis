@@ -3,12 +3,12 @@ function Y = P4T4(X,d)
 
 
 % Allocate according to Task 4 in practice session sheet
-for kk = 1:length(X)
+for kk = 1:size(X,2)
     a = 1;
     for ii =0:d
         for jj=0:d
             if ii+jj<=d
-                Y(kk,a)= X(kk,1)^(ii)*X(kk,2)^(jj);
+                Y(a,kk)= X(1,kk)^(ii)*X(2,kk)^(jj);
                 a = a+1;
             end
         end
