@@ -32,18 +32,8 @@ for ii=1:length(eigvals)
 end
 
 %% Task 4
-fv0 = reshape([psi_dn; psi_n], [], 1);
-utz = 0;
-for j = 1:50
-    utz = utz + eigvals(j)*innervec(j)*psi_n(j);
-end
-utz = u_0_reco(-2*pi);
-ODEP = zeros(100);
-for ii=1:50
-    ODEP(2*ii,2*ii-1) = 1;
-    ODEP(2*ii-1,2*ii) = eigvals(ii)-innervec(ii);
-end
-[z2,y2] = ode113( @(z,y) P3T4(z,y,eigvals,innervec), [-2*pi 2*pi], fv0);
+vector_0 = reshape([psi_dn; psi_n], [], 1);
+[z2,y2] = ode113( @(psi,t) P3T4(psi,t,eigvals,innervec), [-2*pi 2*pi], vector_0);
 
 %% Task 5 KdV numerically (as in chebfun.org)
 tmax = 0.1;
@@ -64,14 +54,16 @@ A_t01.op = @(u) diff(u,2)+u_t01*u;
 [eigfunsComp,eigvalsCom] = eigs(A_t01,50);
 max(eigvalsCom(:))
 
-Almat = zeros(50*2); 
+Almat = zeros(length(eigvals)*2); 
 for ii=1:size(eigvals,1)
-    Almat(ii,2*ii) = -4*eigvals(ii)^2;
-    Almat(2*ii,ii) = -4*eigvals(ii);
+    Almat(2*ii-1,2*ii) = -4*eigvals(ii)^2;
+    Almat(2*ii,2*ii-1) = -4*eigvals(ii);
 end
+
 T = 0.1;
- 
-= expm(T*Almat)*fv0;
+compa = T*Almat;
+solsol = expm(T*Almat)*vector_0;
+
 
 %% Task 7 Compute eigvalues/functions of 3.6 and verify 3.5
 A_var1 = 12;
@@ -107,21 +99,23 @@ figure(1);
 title('Eigenfunctions of the Schrödinger operator')
 hold on
 for ii=1:10
-    txt = ['\lambda = ',num2str(eigvals(ii,ii))];
+    txt = ['\lambda = ',num2str(eigvals(ii))];
     plot(eigfuns{ii},'DisplayName',txt)
 end
 hold off
 legend show
+
 % Task 2
 figure(2);
 title('Reconstruction u(0,z) = 4e^{-z^2}')
 subplot(1,2,1)
+axis([-2*pi 2*pi -1 5])
 plot(u0)
 title('chebfun')
 subplot(1,2,2)
-plot(u_0z_reco)
+plot(u_0_reco)
 title('reconstruction')
-
+axis([-2*pi 2*pi -1 5])
 
 % task 5
 plot(S.init), hold on, plot(u), hold off
