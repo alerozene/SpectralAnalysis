@@ -12,11 +12,16 @@ N.op = @(z,psi) diff(psi,2) - (lambda-u)*psi;
 N.lbc = [exp(-1i*sqrt(-lambda)*-a); -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*-a)];
 
 psi = N\0;
+delta_psi = diff(psi);
 psi(a)
+delta_psi(a)
 
 %% Task 2. 
 
+
+
 %% Task 3.
+
 
 %% Task 4.Write a Matlab script that recreates Figure 1 
 % data from 3.2.1 p11
