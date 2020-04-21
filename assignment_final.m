@@ -3,6 +3,17 @@
 close all; clear all; clc
 %% Task 1. 
 
+a = 2;
+lambda = -1;
+u = 1;
+
+N = chebop(-a,a);
+N.op = @(z,psi) diff(psi,2) - (lambda-u)*psi;
+N.lbc = [exp(-1i*sqrt(-lambda)*-a); -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*-a)];
+
+psi = N\0;
+psi(a)
+
 %% Task 2. 
 
 %% Task 3.
