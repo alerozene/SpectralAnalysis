@@ -1,7 +1,7 @@
 % SC42135 Spectral Analysis of Nonlinear/Infinite-Dimensional Systems.
 % Final assignment
 close all; clear all; clc
-%% Task 1. 
+%% Task 1. IVP to recover eigenfunction using chebfun package[Section 10.2]
 
 a = 2;
 lambda = -1;
@@ -9,7 +9,8 @@ u = 1;
 
 N = chebop(-a,a);
 N.op = @(z,psi) diff(psi,2) - (lambda-u)*psi;
-N.lbc = [exp(-1i*sqrt(-lambda)*-a); -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*-a)];
+init_cndtn = [exp(-1i*sqrt(-lambda)*-a); -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*-a)];
+N.lbc = init_cndtn;
 
 psi = N\0;
 delta_psi = diff(psi);
@@ -18,9 +19,16 @@ delta_psi(a)
 
 %% Task 2. 
 
+A = zeros(2);
+A(1,1)= exp(1i*sqrt(-lambda)*a);
+A(1,2)= exp(-1i*sqrt(-lambda)*a);
+A(2,1)= 1i*sqrt(-lambda)*exp(1i*sqrt(-lambda)*a);
+A(2,2)= -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*a);
 
+gammadelta = A\[psi(a); delta_psi(a)];
 
 %% Task 3.
+
 
 
 %% Task 4.Write a Matlab script that recreates Figure 1 
