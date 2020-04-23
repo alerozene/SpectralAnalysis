@@ -8,7 +8,7 @@ lambda = -1;
 u = 1;
 
 N = chebop(-a,a);
-N.op = @(z,psi) diff(psi,2) - (lambda-u)*psi;
+N.op = @(psi) diff(psi,2) - (lambda-u)*psi;
 init_cndtn = [exp(-1i*sqrt(-lambda)*-a); -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*-a)];
 N.lbc = init_cndtn;
 
@@ -28,8 +28,31 @@ A(2,2)= -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*a);
 gammadelta = A\[psi(a); delta_psi(a)];
 
 %% Task 3.
-
-
+tic
+aa = 1;
+a = 25;
+for lambda = -25:0.1:0
+    N = chebop(-a,a);
+    d = [-a,a];
+    z = chebfun('z', d);
+    u = 20*exp(-z^4);
+    N.op = @(z,psi) diff(psi,2) - (lambda-u)*psi;
+    init_cndtn = [exp(-1i*sqrt(-lambda)*-a); -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*-a)];
+    N.lbc = init_cndtn;
+    psi = N\0;
+    delta_psi = diff(psi);
+    A = zeros(2);
+    A(1,1)= exp(1i*sqrt(-lambda)*a);
+    A(1,2)= exp(-1i*sqrt(-lambda)*a);
+    A(2,1)= 1i*sqrt(-lambda)*exp(1i*sqrt(-lambda)*a);
+    A(2,2)= -1i*sqrt(-lambda)*exp(-1i*sqrt(-lambda)*a);
+    gammadelta = A\[psi(a); delta_psi(a)];
+    
+    gd(:,aa) = gammadelta;
+    aa = aa+1;
+    
+end
+toc
 
 %% Task 4.Write a Matlab script that recreates Figure 1 
 % data from 3.2.1 p11
